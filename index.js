@@ -18,13 +18,13 @@ const PRIVATE_APP_ACCESS = process.env.PRIVATE_APP_ACCESS;
 // * Code for Route 1 goes here
 app.get('/', async (req, res) => {
 
-    const contacts = 'https://api.hubspot.com/crm/v3/objects/cars?properties=name,brand,type,number_of_kms';
+    const cars = 'https://api.hubspot.com/crm/v3/objects/cars?properties=name,brand,type,number_of_kms';
     const headers = {
         Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
         'Content-Type': 'application/json'
     }
     try {
-        const resp = await axios.get(contacts, { headers });
+        const resp = await axios.get(cars, { headers });
         const data = resp.data.results;
         res.render('cars', { title: 'My Cars? | HubSpot APIs', data });      
     } catch (error) {
@@ -34,12 +34,83 @@ app.get('/', async (req, res) => {
 
 
 // TODO: ROUTE 2 - Create a new app.get route for the form to create or update new custom object data. Send this data along in the next route.
+app.get('/cars/add', async (req, res) => {
+
+    // const cars = 'https://api.hubspot.com/crm/v3/objects/cars?properties=name,brand,type,number_of_kms,hs_object_id';
+    // const headers = {
+    //     Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
+    //     'Content-Type': 'application/json'
+    // }
+    try {
+        //const resp = await axios.get(cars, { headers });
+        //const data = resp.data.results;
+        res.render('cars_add', { title: 'Add a car | HubSpot APIs' });      
+    } catch (error) {
+        console.error(error);
+    }
+});
 
 // * Code for Route 2 goes here
+// Route to add a new car (form + processing) ?
+app.post('/cars/add', async (req, res) => {
+    const { name, brand, type, number_of_kms } = req.body;
+
+    const createCarUrl = 'https://api.hubspot.com/crm/v3/objects/cars';
+    const headers = {
+        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
+        'Content-Type': 'application/json'
+    };
+
+    const newCar = {
+        properties: {
+            name,
+            brand,
+            type,
+            number_of_kms
+        }
+    };
+
+    try {
+        await axios.post(createCarUrl, newCar, { headers });
+        res.redirect('/');
+    } catch (error) {
+        console.error('Error adding car:', error.response?.data || error.message);
+        res.status(500).send('Failed to add car');
+    }
+});
+
 
 // TODO: ROUTE 3 - Create a new app.post route for the custom objects form to create or update your custom object data. Once executed, redirect the user to the homepage.
-
+// form + 
 // * Code for Route 3 goes here
+// Route to edit an existing car
+app.post('/cars/edit/:id', async (req, res) => {
+    const carId = req.params.id;
+    const { name, brand, type, number_of_kms } = req.body;
+
+    const updateCarUrl = `https://api.hubspot.com/crm/v3/objects/cars/${carId}`;
+    const headers = {
+        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
+        'Content-Type': 'application/json'
+    };
+
+    const updatedCar = {
+        properties: {
+            name,
+            brand,
+            type,
+            number_of_kms
+        }
+    };
+
+    try {
+        await axios.patch(updateCarUrl, updatedCar, { headers });
+        res.redirect('/');
+    } catch (error) {
+        console.error('Error updating car:', error.response?.data || error.message);
+        res.status(500).send('Failed to update car');
+    }
+});
 
 /** 
 * * This is sample code to give you a reference for how you should structure your calls. 

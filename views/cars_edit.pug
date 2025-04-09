@@ -7,14 +7,13 @@ html
         meta(name="viewport" content="width=device-width, initial-scale=1")
         link(rel="stylesheet", href="/css/style.css")
     body    
-        h1 My Cars?
-        .card
-            a(href="/cars/add") Add a new car
-        .cards 
+        h1 Edit Cars
+
+
+//- **         .cards 
             each car in data
                 .card 
                     h2.card__name #{car.properties.name}
                     p.card__brand #{car.properties.brand}
                     p.card__type #{car.properties.type}
                     p.card__kms #{car.properties.number_of_kms}
-                    a(href=`/cars/edit/${car.properties.hs_object_id}`) Edit car
