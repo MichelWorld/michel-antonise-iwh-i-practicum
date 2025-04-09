@@ -1,4 +1,4 @@
-require('dotenv').config;
+require('dotenv').config();
 
 const express = require('express');
 const axios = require('axios');
@@ -17,7 +17,8 @@ const PRIVATE_APP_ACCESS = process.env.PRIVATE_APP_ACCESS;
 
 // * Code for Route 1 goes here
 app.get('/', async (req, res) => {
-    const contacts = 'https://api.hubspot.com/crm/v3/objects/cars?properties=name,brand,type';
+
+    const contacts = 'https://api.hubspot.com/crm/v3/objects/cars?properties=name,brand,type,number_of_kms';
     const headers = {
         Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
         'Content-Type': 'application/json'
@@ -25,7 +26,7 @@ app.get('/', async (req, res) => {
     try {
         const resp = await axios.get(contacts, { headers });
         const data = resp.data.results;
-        res.render('contacts', { title: 'My Cars? | HubSpot APIs', data });      
+        res.render('cars', { title: 'My Cars? | HubSpot APIs', data });      
     } catch (error) {
         console.error(error);
     }
