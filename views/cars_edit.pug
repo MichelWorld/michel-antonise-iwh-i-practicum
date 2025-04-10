@@ -7,13 +7,12 @@ html
         meta(name="viewport" content="width=device-width, initial-scale=1")
         link(rel="stylesheet", href="/css/style.css")
     body    
-        h1 Edit Cars
-
-
-//- **         .cards 
-            each car in data
-                .card 
-                    h2.card__name #{car.properties.name}
-                    p.card__brand #{car.properties.brand}
-                    p.card__type #{car.properties.type}
-                    p.card__kms #{car.properties.number_of_kms}
+        h1 Edit a new Car
+        .form-wrapper
+            form(action=`/cars/edit/${data.hs_object_id}`, method="POST")
+                input(name="name", value=data.name)
+                input(name="brand", value=data.brand)
+                input(name="type", value=data.type)
+                input(name="number_of_kms", value=data.number_of_kms)
+                button(type="submit") Save changes
+            a(href="/") Back to overview

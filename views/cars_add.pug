@@ -8,11 +8,12 @@ html
         link(rel="stylesheet", href="/css/style.css")
     body    
         h1 Add a new Car
-        p.form-wrapper
-        form(action="/cars/add", method="POST")
-            input(name="name", placeholder="Name")
-            input(name="brand", placeholder="Brand")
-            input(name="type", placeholder="Type")
-            input(name="number_of_kms", placeholder="Number of KMs")
-            button(type="submit") Add Car
+        .form-wrapper
+            form(action="/cars/add", method="POST")
+                input(name="name", placeholder="Name")
+                input(name="brand", placeholder="Brand")
+                input(name="type", placeholder="Type")
+                input(name="number_of_kms", placeholder="Number of KMs")
+                button(type="submit") Add Car
+            a(href="/") Back to overview
                     
